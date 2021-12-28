@@ -40,7 +40,7 @@
 ;; Portions of this code are developed from a blog post by Jack Moffitt:
 ;; http://metajack.im/2008/12/30/gtd-capture-with-emacs-orgmode/
 
-(require 'cl)
+(require 'cl-lib)
 (require 'org-protocol)
 (require 'ol-bibtex)
 
@@ -56,12 +56,21 @@ corresponding applescript enable opening PDFs in Preview at a
 particualar page."
   (let ((page (when (string-match "::\\(.*\\)\\'" link)
 		(match-string 1 link))))
-    (apply #'start-process "openpdfpage"
-	   nil
-	   "osascript"
-	   (string-trim (shell-command-to-string "which openpdfpage"))
-	   path
-	   (when page (list page)))))
+    (do-applescript
+     (format
+      "do shell script \"open \" & quoted form of \"%s\""
+      path))
+    (when page
+      (do-applescript (format
+"tell application \"Preview\"
+     activate
+     tell application \"System Events\"
+     	  keystroke \"g\" using {option down, command down}
+     	  keystroke \"%s\"
+          keystroke return
+     end tell
+end tell"
+page)))))
 
 ;; (setf (alist-get "\\.pdf\\'" org-file-apps nil nil #'equal) #'org-mac-preview-open)
 

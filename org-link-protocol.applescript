@@ -28,12 +28,18 @@ on sendLink()
     do shell script (script "getEmacsClient")'s getEmacsClient() & " org-protocol://" & theProtocol & "?" & theQuery
 end sendLink
 
-tell application "Finder"
-    set orgMacProtocolScriptPath to (container of (path to me)) as text
-end tell
+on go(theCaller)
+    tell application "Finder"
+	set orgMacProtocolScriptPath to (container of (path to me)) as text
+    end tell
 
-tell application "System Events"
-    set theApp to item 1 of (get name of processes whose frontmost is true)
-end tell
+    tell application "System Events"
+	set theApp to item 1 of (get name of processes whose frontmost is true)
+    end tell
 
-set theHandler to getAppHandler(theApp)
+    set theHandler to getAppHandler(theApp)
+
+    tell theCaller to getParams()
+
+    sendLink()
+end go

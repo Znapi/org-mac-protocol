@@ -2,7 +2,7 @@ EMACSCLIENT_SEARCH_PATHS=$(HOME)/bin:$(HOME)/Applications/Emacs.app/Contents/Mac
 PREFIX=$(HOME)/Library/Script\ Libraries/
 
 # org-link-protocol.applescript must be compiled before some other scripts
-SRCS = org-link-protocol.applescript $(wildcard *.applescript) $(wildcard *.rb)
+SRCS = org-link-protocol.applescript org-link.applescript $(wildcard *.applescript) $(wildcard *.rb)
 OBJS = $(addprefix $(PREFIX),$(patsubst %.applescript,%.scpt,$(SRCS)))
 OTHER_SCRIPTS=escape.rb
 

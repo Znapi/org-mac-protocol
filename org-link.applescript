@@ -1,6 +1,6 @@
-tell script "org-link-protocol" to run
+tell script "org-link-protocol" to go(me)
 
-if theHandler is not ""
+on getParams()
     -- The handler's doOrgLink() will fill out these globals.
     -- Generally they will only need to fill out theURL and theTitle.
     -- The other options are provided just in case it is easier to
@@ -8,11 +8,10 @@ if theHandler is not ""
     -- applescript alone to produce a nice url and title.
     global theURL
     global theTitle
-    global otherParams
-    set otherParams to {}
+    global theProtocol
     set theProtocol to "store-link"
+    global theHandler
     tell script theHandler to doOrgLink()
-
-    set theParams to {"url", theURL, "title", theTitle} & otherParams
-    tell script "org-link-protocol" to sendLink()
-end if
+    global theParams
+    set theParams to {"url", theURL, "title", theTitle}
+end getParams
