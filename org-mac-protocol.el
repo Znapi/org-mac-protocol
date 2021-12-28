@@ -45,7 +45,26 @@
 (require 'ol-bibtex)
 
 ;;; Define org-mode hyperlink types
-;;
+
+;; Preview
+
+(defun org-mac-preview-open (path link)
+  "Replacement PDF open function for macOS.
+
+Org can't open Preview to a particular page. This function and
+corresponding applescript enable opening PDFs in Preview at a
+particualar page."
+  (let ((page (when (string-match "::\\(.*\\)\\'" link)
+		(match-string 1 link))))
+    (apply #'start-process "openpdfpage"
+	   nil
+	   "osascript"
+	   (string-trim (shell-command-to-string "which openpdfpage"))
+	   path
+	   (when page (list page)))))
+
+;; (setf (alist-get "\\.pdf\\'" org-file-apps nil nil #'equal) #'org-mac-preview-open)
+
 ;; BibDesk
 
 (org-add-link-type "bibdesk" 'org-mac-bibdesk-open)

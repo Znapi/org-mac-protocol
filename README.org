@@ -50,6 +50,11 @@ Tested on macOS 10.13 with org version 9.4.4.
 
 - ~(server-start)~
 
+- If you use Preview as the default app for opening PDFs, also do
+  this to allow opening to individual pages:
+
+  ~(setf (alist-get "\\.pdf\\'" org-file-apps nil nil #'equal) #'org-mac-preview-open)~
+
 *** Find your preferred emacsclient
     
 The makefile defines =EMACSCLIENT_SEARCH_PATH= and uses
