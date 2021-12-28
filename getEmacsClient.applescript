@@ -1,7 +1,7 @@
 (*
-org-link.scpt --- extract an org-protocol links from all open tabs in the front Safari window
+getEmacsClient.scpt --- returns the correct path to emacsclient
 
-Copyright (C) 2009, 2010 Christopher Suckling
+Copyright (C) 2009 Christopher Suckling
 
 Author: Christopher Suckling <suckling at gmail dot com>
 
@@ -29,25 +29,12 @@ Part of org-mac-protocol
 Installation
 
 1) Open in AppleScript Editor
-2) Save as File Format: Script in  ~/Library/Scripts/
+2) Save as File Format: Script in  ~/Library/Scripts/orgQSLib/
+3) Edit theEmacsClient to point to your emacsclient
 
 Please see org-mac-protocol.org for full installation and usage instructions
 *)
 
-set ASTID to AppleScript's text item delimiters
-set text item delimiters to {":"}
-set myPath to (path to me) as text
-set orgQSLib to (text items 1 through -2 of myPath) & "orgQSLib:" as text
-set AppleScript's text item delimiters to ASTID
-
-set getEmacsLib to (load script file ((orgQSLib as text) & "getEmacsClient.scpt"))
-set getItemMetaLib to (load script file ((orgQSLib as text) & "getItemMetadata.scpt"))
-global escapeLib
-set escapeLib to ((orgQSLib as text) & "escape.rb")
-set theProtocol to "org-protocol:/safari-tabs:/"
-
-set theApp to "Safari-Tabs"
-
-set theScript to getEmacsLib's getEmacsClient() & " " & getItemMetaLib's getItemMetadata(theProtocol, theApp)
-
-do shell script of theScript
+on getEmacsClient()
+    return "/Users/znapi/bin/emacsclient"
+end getEmacsClient

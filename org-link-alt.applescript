@@ -11,7 +11,15 @@ if theHandler is not ""
     global otherParams
     set otherParams to {}
     set theProtocol to "store-link"
-    tell script theHandler to doOrgLink()
+    try
+	tell script theHandler to doOrgLinkAlt()
+    on error errStr number errorNumber
+	if (errorNumber = -1708) and ("doOrgLinkAlt" is in errStr)then
+	    tell script theHandler to doOrgLink()
+	else
+	    error errStr number errorNumber
+	end if
+    end try
 
     set theParams to {"url", theURL, "title", theTitle} & otherParams
     tell script "org-link-protocol" to sendLink()

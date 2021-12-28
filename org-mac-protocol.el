@@ -42,7 +42,7 @@
 
 (require 'cl)
 (require 'org-protocol)
-(require 'org-bibtex)
+(require 'ol-bibtex)
 
 ;;; Define org-mode hyperlink types
 ;;

@@ -1,0 +1,153 @@
+* org-mac-protocol manual
+
+A suite of scripts that allow the user to store org links from other
+applications without switching focus to Emacs.
+
+The following applications are currently supported (some support:
+
++ Firefox
++ Chrome
++ Safari
++ Preview
++ Skim
++ AddressBook
++ BibDesk
++ Finder
++ Keynote
++ Mail
++ Numbers
++ Pages
++ Skim
++ Terminal
++ iTunes
+
+There also exists a generic application handler that may or may not
+work for applications without explicit support.
+
+*NOTE*: Support for some ofthese applications may be buggy. I don't
+have or use many of these apps but I felt like I should include all
+the apps that the repo this was forked from supported, as examples of
+how to add new handlers and to make it easier for others to patch it
+themselves.
+
+** Requirements
+
+Tested on macOS 10.13 with org version 9.4.4.
+
+** Installation and configuration
+
+*** Emacs
+      
+- Put =org-mac-protocol.el= on your Emacs load-path
+
+- ~(require 'org-mac-protocol)~
+
+  or
+     
+  =M-x customize-variable <RET> org-modules <RET>=
+
+  and add =org-mac-protocol= to =External packages=
+
+- ~(server-start)~
+
+*** Find your preferred emacsclient
+    
+The makefile defines =EMACSCLIENT_SEARCH_PATH= and uses
+=findEmacsClient.sh= to locate an emacsclient. If it does not find
+your preferred emacsclient, you can edit the makefile or invoke make
+as =EMACSCLIENT=/path/to/emacsclient make ...=
+
+*** Applescripts and Automator Workflows
+
+In short, to install the scripts: =make all=. Then, if desired, to
+install the Automator workflows: =make services install-services=.
+
+- The default installation prefix is =~/Library/Script Libraries=
+  because this was the only location that allowed the scripts to
+  reference eachother without messing with paths or
+  =OSA_LIBRARY_PATH=.
+
+  - You must create this directory if it does not already exist.
+
+- Simply =make all= to compile and install the scripts to the default
+  =PREFIX= of =~/Library/Script Libraries=
+
+  - This step does both compilation and installation, because the
+    applescript compilation fails if a referenced script is not
+    already installed to the load path. Applescript is a pain to work
+    with.
+
+  - If errors occur, if they are for a handler script for an
+    application that you do not have installed, you can ignore them.
+    Apple script compilation fails when scripts reference apps that
+    aren't installed. Again, its a pain to work with.
+
+- There are third party applications such as Alfred that will allow
+  you to bind keys directly to these scripts. Alternatively, you can
+  build and install the Automator workflows and create keybindings for
+  these workflows in System Preferences:
+
+  - =make services install-services=
+
+  - Navigate to System Preferences > Keyboard > Shortcuts > Services >
+    General. There you will find the workflows =org-link= and
+    =org-link-alt= and you can create keyboard shortcuts for them
+    here.
+
+  - You can now use your keyboard shortcuts or invoke the services
+    from the services menu:
+
+    [[file:services-menu.png]]
+
+** Usage
+
+There are two scripts that can be invoked, =org-link= and
+=org-link-alt=. They both store org links to the current content, but
+they can link to slightly different content. Currently, they are
+identical for all applications except Preview. =org-link-alt= will
+store a link to the "next" page in Preview. This is because, when in
+two page mode, the "current page" is always the left page, so both
+scripts are necessary to allow linking to either page.
+
+*** Currently supported applications
+
+|               | org-link           | org-link-alt    |
+|---------------+--------------------+-----------------|
+| Safari        | Link: URL          | same            |
+| Firefox       | Link: URL          | same            |
+| Google Chrome | Link: URL          | same            |
+| Mail          | Link: message      | same            |
+| Address Book  | Link: person       | same            |
+| Skim          | Link: page         | same            |
+| Preview       | Link: page         | Link: next page |
+| BibDesk       | Link: entry        | same            |
+| Pages         | Link: page [fn:3]  | same            |
+| Numbers       | Link: range [fn:4] | same            |
+| Keynote       | Link: slide        | same            |
+| iTunes        | Link: track        | same            |
+| Finder        | Link: file         | same            |
+| Terminal      | Link: Terminal.app | same            |
+
+
+- Unsupported applications that are AppleScript aware will attempt to
+  create links to the front document
+
+[fn:3] Pages actually links to a character offset from the start of
+the document. If the document is edited, then the link may degrade.
+
+[fn:4] Numbers opens and selects the linked range, but it may be necessary to
+change sheet manually.      
+
+** Context
+
+I created this fork of org-mac-protocol because org-mac-protocol has
+not been updated for 10 years and its link format seemed to no longer
+be supported by Org. This fork also automates more of the installation
+process, adds the option to install Automator workflows, and
+reorganized the applescripts so that they can actually compile and
+don't pester the user with "where is this application located"
+messages when any supported applications aren't installed.
+
+Features such as =org-note= and =org-remember= were stripped, not
+because they are bad but because I didn't feel like reimplementing
+them and don't plan to use them myself.
