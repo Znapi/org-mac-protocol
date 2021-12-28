@@ -3,7 +3,7 @@
 A suite of scripts that allow the user to store org links from other
 applications without switching focus to Emacs.
 
-The following applications are currently supported (some support:
+The following applications are currently supported:
 
 + Firefox
 + Chrome
@@ -24,7 +24,7 @@ The following applications are currently supported (some support:
 There also exists a generic application handler that may or may not
 work for applications without explicit support.
 
-*NOTE*: Support for some ofthese applications may be buggy. I don't
+*NOTE*: Support for some of these applications may be buggy. I don't
 have or use many of these apps but I felt like I should include all
 the apps that the repo this was forked from supported, as examples of
 how to add new handlers and to make it easier for others to patch it
@@ -82,10 +82,10 @@ install the Automator workflows: =make services install-services=.
     Apple script compilation fails when scripts reference apps that
     aren't installed. Again, its a pain to work with.
 
-- There are third party applications such as Alfred that will allow
-  you to bind keys directly to these scripts. Alternatively, you can
-  build and install the Automator workflows and create keybindings for
-  these workflows in System Preferences:
+- There are third party applications that will allow you to bind keys
+  directly to these scripts. Alternatively, you can build and install
+  the Automator workflows and create keybindings for these workflows
+  in System Preferences:
 
   - =make services install-services=
 
@@ -137,6 +137,10 @@ the document. If the document is edited, then the link may degrade.
 
 [fn:4] Numbers opens and selects the linked range, but it may be necessary to
 change sheet manually.      
+
+** Uninstall
+
+=make uninstall= and =make uninstall-services=
 
 ** Context
 
